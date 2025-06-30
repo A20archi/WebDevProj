@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Social Icons Hover</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: rgb(48, 47, 47);
+      color: rgb(240, 235, 235);
+    }
+
+    .social {
+      border: 3px solid rgba(29, 237, 237, 0.911);
+      border-radius: 30px;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+      background-color: rgba(255, 255, 255, 0.03);
+    }
+
+    .icon a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 10px;
+      font-size: 24px;
+      color: azure;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .icon a h3 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .icon a.L:hover {
+      color: rgb(5, 102, 248); /* LinkedIn Blue */
+      text-shadow: 0 0 10px rgba(5, 102, 248, 0.7);
+      
+    }
+
+    .icon a.Y:hover {
+      color: rgba(232, 20, 20, 0.884); /* YouTube Red */
+      text-shadow: 0 0 10px rgba(232, 20, 20, 0.6);
+    }
+
+    .icon a.I:hover {
+      color: rgb(118, 7, 245); /* Instagram Violet */
+      text-shadow: 0 0 10px rgba(118, 7, 245, 0.6);
+    }
+    .icon a {
+  position: relative; /* Needed for ::after to position relative to it */
+  overflow: hidden;   /* Keeps the bar neatly inside */
+}
+
+.icon a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  background-color: currentColor; /* Matches hover color */
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+  .icon a:hover::after {
+    transform: scaleX(1);
+}
+  </style>
+</head>
+
+<body>
+  <div class="social">
+    <div class="icon">
+      <a class="L" href="https://www.linkedin.com/in/saptarshi-banerjee-0b763831a" target="_blank">
+        <h3>LinkedIn</h3>
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </div>
+
+    <div class="icon">
+      <a class="Y" href="http://www.youtube.com/@ArcIITBHU" target="_blank">
+        <h3>YouTube</h3>
+        <i class="fab fa-youtube"></i>
+      </a>
+    </div>
+
+    <div class="icon">
+      <a class="I" href="https://www.instagram.com/" target="_blank">
+        <h3>Instagram</h3>
+        <i class="fab fa-instagram"></i>
+      </a>
+    </div>
+  </div>
+</body>
+</html>
