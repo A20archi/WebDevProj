@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WorkFlow Login</title>
+  <link rel="stylesheet" href="output.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+
+<body class="bg-slate-900 flex flex-col items-center justify-center min-h-screen font-semibold">
+    <canvas id="donut" class="fixed top-0 left-0 w-full h-full -z-10"></canvas>
+
+  <h2 class="text-slate-200 text-3xl mb-6">Sign Up</h2>
+
+  <form class="flex flex-col gap-4 bg-slate-800 p-6 rounded-md shadow-md w-80">
+    <div class="flex flex-col">
+      <label for="email" class="text-slate-300 mb-1">Email</label>
+      <input type="email" id="email" placeholder="Enter your Email" class="p-2 rounded bg-slate-700 text-white focus:outline-none focus:ring focus:ring-cyan-400"/>
+    </div>
+
+    <div class="flex flex-col">
+      <label for="password" class="text-slate-300 mb-1">Password</label>
+      <input type="password" id="password" placeholder="Enter your Password" class="p-2 rounded bg-slate-700 text-white focus:outline-none focus:ring focus:ring-cyan-400"/>
+    </div>
+    
+    <div class="flex items-center my-4">
+        <div class="flex-grow h-px bg-lime-400"></div>
+        <span class="text-gray-300 px-3">Sign up with</span>
+        <div class="flex-grow h-px bg-lime-400"></div>
+    </div>
+      
+    <div class="flex justify-center gap-6 border border-white p-4 rounded-md">
+
+      <a href="https://github.com/" class="text-cyan-50 hover:text-orange-800 mr-3"><i class="fab fa-github"></i></a>
+      <a href="https://www.google.com/" class="text-cyan-50 hover:text-green-500 px-3 mr-3"><i class="fab fa-google"></i></a>
+      <a href="https://www.google.com/" class="text-cyan-50 hover:text-purple-500 px-3 mr-3"><i class="fab fa-instagram"></i>
+      </i></a>
+      <a href="https://www.google.com/" class="text-cyan-50 hover:text-blue-500 px-3"><i class="fab fa-twitter"></i></a>
+
+    </div> 
+    
+    
+
+    <button type="submit" class="mt-4 bg-cyan-500 text-white py-2 rounded hover:bg-cyan-600 transition duration-200">
+      Sign Up
+    </button>
+  </form>
+  <script>
+    const canvas = document.getElementById('donut');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  
+    const w = canvas.width;
+    const h = canvas.height;
+    let A = 0, B = 0;
+  
+    function renderFrame() {
+      const output = [];
+      const zbuffer = [];
+      const R1 = 1, R2 = 2, K2 = 5;
+      const K1 = w * K2 * 3 / (8 * (R1 + R2));
+  
+      for (let i = 0; i < w * h; i++) {
+        output[i] = '';
+        zbuffer[i] = 0;
+      }
+  
+      for (let theta = 0; theta < 2 * Math.PI; theta += 0.07) {
+        for (let phi = 0; phi < 2 * Math.PI; phi += 0.02) {
+          const sinTheta = Math.sin(theta), cosTheta = Math.cos(theta);
+          const sinPhi = Math.sin(phi), cosPhi = Math.cos(phi);
+          const sinA = Math.sin(A), cosA = Math.cos(A);
+          const sinB = Math.sin(B), cosB = Math.cos(B);
+  
+          const circlex = R2 + R1 * cosTheta;
+          const circley = R1 * sinTheta;
+  
+          const x = circlex * (cosB * cosPhi + sinA * sinB * sinPhi) - circley * cosA * sinB;
+          const y = circlex * (sinB * cosPhi - sinA * cosB * sinPhi) + circley * cosA * cosB;
+          const z = K2 + cosA * circlex * sinPhi + circley * sinA;
+          const ooz = 1 / z;
+  
+          const xp = Math.floor(w / 2 + K1 * ooz * x);
+          const yp = Math.floor(h / 2 - K1 * ooz * y);
+          const idx = xp + w * yp;
+  
+          const lum = cosPhi * cosTheta * sinB - cosA * cosTheta * sinPhi - sinA * sinTheta + cosB * (cosA * sinTheta - cosTheta * sinA * sinPhi);
+          const brightness = Math.floor(lum * 8);
+  
+          if (yp >= 0 && yp < h && xp >= 0 && xp < w && ooz > zbuffer[idx]) {
+            zbuffer[idx] = ooz;
+            const char = '01'[Math.floor(Math.random() * 1)];
+            output[idx] = char;
+          }
+        }
+      }
+  
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0, 0, w, h);
+      ctx.fillStyle = 'white';
+      ctx.font = '2.5px monospace';
+  
+      for (let i = 0; i < output.length; i++) {
+        if (output[i]) {
+          const x = i % w;
+          const y = Math.floor(i / w);
+          ctx.fillText(output[i], x, y);
+        }
+      }
+  
+      A += 0.04;
+      B += 0.02;
+      requestAnimationFrame(renderFrame);
+    }
+  
+    renderFrame();
+  </script>
+  
+</body>
+</html>
